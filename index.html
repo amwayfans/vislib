@@ -53,7 +53,7 @@ footer a{color:var(--accent)}
 <header>
   <h1>視覺素材庫</h1>
   <p>風格看板 × 動態詞彙（240 條）</p>
-  <p class="sub2">每張卡都能一鍵複製提示詞</p>
+  <p class="sub2">一鍵複製就能直接餵給 AI（風格＝提示詞、詞彙＝指令）</p>
 </header>
 <nav role="tablist">
   <button id="tab-styles" role="tab" aria-selected="true">風格庫</button>
@@ -71,7 +71,7 @@ footer a{color:var(--accent)}
 <footer>
   動態詞彙來源 <a href="https://github.com/showheyohtaki/motion-prompt" target="_blank" rel="noopener">motion-prompt</a>
   （MIT License © 2026 Shohei Ohtaki）· 風格樣張以 fal 生成（本機素材庫）<br>
-  建置 2026-11-22 16:58 ｜本頁由程式產生，請改 <code>build_board.py</code> 而不是改 HTML
+  建置 2026-11-22 17:01 ｜本頁由程式產生，請改 <code>build_board.py</code> 而不是改 HTML
 </footer>
 <div class="toast" id="toast">已複製</div>
 <script>
@@ -81,9 +81,9 @@ const $ = s => document.querySelector(s);
 const esc = s => (s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),1200);}
 async function copy(text,label){
-  try{ await navigator.clipboard.writeText(text); toast('已複製：'+(label||'提示詞')); }
+  try{ await navigator.clipboard.writeText(text); toast('已複製：'+(label||'內容')); }
   catch(e){ const ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta);
-    ta.select(); document.execCommand('copy'); ta.remove(); toast('已複製：'+(label||'提示詞')); }
+    ta.select(); document.execCommand('copy'); ta.remove(); toast('已複製：'+(label||'內容')); }
 }
 const packTitles = [...new Set(DATA.els.map(e=>e.pack_zh))];
 function fillSelect(){
@@ -124,7 +124,7 @@ function render(){
         <div class="en">${esc(e.name_en)} · ${esc(e.pack_zh)} · #${e.id}</div>
         <p>${esc(e.meaning_zh)}</p>
         <div>${(e.tags||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>
-        <button class="copy" data-copy="m-${e.id}" data-label="${esc(e.name_zh)}">複製指令</button>
+        <button class="copy" data-copy="m-${e.id}" data-label="${esc(e.name_zh)}">複製這句指令</button>
         <details><summary>看指令全文</summary><pre>${esc(e.ask_zh)}</pre></details>
       </div></article>`).join('');
   }
